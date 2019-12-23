@@ -8,14 +8,14 @@ function makeRequest(url) {
     xhr.addEventListener('load', function(res) {
         if (res.target.status === 200) {
             const response = JSON.parse(res.target.response);
-            // const rates = Object.entries(response);
-            console.log(response);
+
             showCurrencies({
                 base: response.base,
                 rates: response.rates
             });
+        } else {
+            console.error(res.target.response);
         }
-        
     });
     xhr.open('GET', url);
     xhr.send();
@@ -23,17 +23,16 @@ function makeRequest(url) {
 
 function showCurrencies(options) {
     const selectCurrencieEl = document.querySelectorAll('select');
-    selectCurrencieEl.forEach(element => {
-        element.innerHTML = '';
-    });
+    selectCurrencieEl.forEach(element => element.innerHTML = '');
+
     const currencieNames = Object.keys(options.rates);
-    console.log(currencieNames);
     const rate = Object.values(options.rates);
+
     const baseElement = document.createElement('option');
-    console.log(options.rates);
     selectFrom.appendChild(baseElement);
     baseElement.textContent = options.base;
-    
+
+    //loop through all the rates and add an option element for each rate
     currencieNames.forEach((curName, index) => {
         selectCurrencieEl.forEach(element => {
             const optionEl = document.createElement('option');
@@ -44,17 +43,21 @@ function showCurrencies(options) {
     });
 }
 
+//convert the value user entered from one currency to another
 function calculate() {
     const showConvertedVal = document.querySelector('.converted-value');
     let convertedValue = 0;
+    //value user enters
     const convertValue = document.querySelector('#value').value;
+    //value of the currency user wants to convert to
     const convertToValue = selectToCurrencie.options[selectToCurrencie.options.selectedIndex].getAttribute('value');
-    console.log(convertValue, convertToValue);
+
     convertedValue = convertValue * convertToValue;
+    //converted currency name
     const convertedCurName = selectToCurrencie.options[selectToCurrencie.options.selectedIndex].textContent;
     showConvertedVal.textContent = `${convertedValue} ${convertedCurName}`;
 }
-
+//make a call to the api to get different rates from currency user chooses
 selectFrom.addEventListener('change', function() {
     const base = this.options[this.selectedIndex].textContent;
     makeRequest(`https://api.exchangeratesapi.io/latest?base=${base}`);

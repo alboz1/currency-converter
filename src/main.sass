@@ -29,7 +29,8 @@ body
     margin: 0 auto
     padding: 50px 20px
     box-sizing: border-box
-
+    @media (max-width: 420px)
+        height: 100vh
     .site-header
         width: 100%
         h1
@@ -37,6 +38,8 @@ body
             font-size: 48px
             font-weight: 700
             margin: 0
+            @media (max-width: 420px)
+                font-size: 30px
 
     .line
         border: none
@@ -55,7 +58,13 @@ body
             color: #313030
             margin-right: 15px
             padding: 6px 4px
+            width: 100px
             @extend %input-select-styles
+            @media (max-width: 420px)
+                width: 100%
+                margin: 10px 0
+        @media (max-width: 420px)
+            margin: 0
 
     .converter
         input[type="number"]
@@ -80,6 +89,10 @@ body
                 background: lighten(#3258DC, 7%)
             &:focus
                 outline: none
+            @media (max-width: 380px)
+                margin: 20px
+        @media (max-width: 420px)
+            margin-top: 40px
     .converted-value
         color: $text-color
         margin-top: 30px
